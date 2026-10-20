@@ -1,8 +1,8 @@
 # AiSD
 
 Implementacja algorytmów sortowania
-* **Zadanie 2.3:** Sortowanie bąbelkowe (`bubblesort`)
-* **Zadanie 2.4:** Sortowanie szybkie (`quicksort`)
+* **Zadanie 2.3:** (`bubblesort`)
+* **Zadanie 2.4:** (`quicksort`)
 
 * Kompilacja: (`make`)
 * Uruchomienie: (`./main.out`)
