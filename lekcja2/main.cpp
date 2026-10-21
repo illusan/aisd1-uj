@@ -60,6 +60,6 @@ void test_mergesort() {
 int main() {
     test_bubblesort();
     test_mergesort();
-    std::cout << "Wszystkie testy zakończone pomyślnie" << std::endl;
+    std::cout << "Wszystkie testy zakończone pomyślnie." << std::endl;
     return 0;
 }
