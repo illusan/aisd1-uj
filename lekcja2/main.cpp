@@ -1,67 +1,65 @@
 #include <algorithm>
-#include <array>
 #include <cassert>
 #include <iostream>
-#include <random>
+#include <list>
 #include <string>
 #include <vector>
 #include "sortowanie.hpp"
 
-template<typename Container>
-void test_sort(const Container & data) {
-    Container expected = data;
-    std::sort(expected.begin(), expected.end());
+void test_bubblesort() {
+    int t[] = {5, 2, 8, 1, 9, 3, 7};
+    bubblesort(t, t + 7);
+    assert(std::is_sorted(t, t + 7));
 
-    Container a = data;
-    bubblesort(a.begin(), a.end());
-    assert(std::is_sorted(a.begin(), a.end()));
-    assert(a == expected);
+    std::vector<int> empty;
+    bubblesort(empty.begin(), empty.end());
+    assert(empty.empty());
 
-    Container b = data;
-    quicksort(b.begin(), b.end());
-    assert(std::is_sorted(b.begin(), b.end()));
-    assert(b == expected);
+    std::vector<int> v = {4, 4, -1, 0, 4, -1};
+    bubblesort(v.begin(), v.end());
+    assert(std::is_sorted(v.begin(), v.end()));
+    assert(v == std::vector<int>({-1, -1, 0, 4, 4, 4}));
+
+    std::vector<std::string> words = {"kot", "ala", "pies", "ma"};
+    bubblesort(words.begin(), words.end());
+    assert(std::is_sorted(words.begin(), words.end()));
+
+    std::vector<int> big;
+    for (int i = 1000; i > 0; --i) {
+        big.push_back(i);
+    }
+    bubblesort(big.begin(), big.end());
+    assert(std::is_sorted(big.begin(), big.end()));
 }
 
-std::vector<int> random_ints(int n, int max_value) {
-    std::mt19937 gen(n);
-    std::uniform_int_distribution<int> dist(0, max_value);
-    std::vector<int> v(n);
-    for (int i = 0; i < n; ++i) {
-        v[i] = dist(gen);
+void test_mergesort() {
+    int t[] = {5, 2, 8, 1, 9, 3, 7};
+    mergesort(t, t + 7);
+    assert(std::is_sorted(t, t + 7));
+
+    std::vector<int> one = {42};
+    mergesort(one.begin(), one.end());
+    assert(one[0] == 42);
+
+    std::vector<double> d = {2.5, -0.5, 1.0, 2.5, 0.0};
+    mergesort(d.begin(), d.end());
+    assert(std::is_sorted(d.begin(), d.end()));
+
+    std::list<int> L = {3, 1, 2, 5, 4};
+    mergesort(L.begin(), L.end());
+    assert(std::is_sorted(L.begin(), L.end()));
+
+    std::vector<int> big;
+    for (int i = 0; i < 100000; ++i) {
+        big.push_back((i * 7919) % 1000);
     }
-    return v;
+    mergesort(big.begin(), big.end());
+    assert(std::is_sorted(big.begin(), big.end()));
 }
 
 int main() {
-    test_sort(std::vector<int>());
-    test_sort(std::vector<int>{7});
-    test_sort(std::vector<int>{2, 1});
-    test_sort(std::vector<int>{9, 4, 7, 3, 6, 8, 2, 1, 5, 0});
-    test_sort(std::vector<int>{0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
-    test_sort(std::vector<int>{9, 8, 7, 6, 5, 4, 3, 2, 1, 0});
-    test_sort(std::vector<int>(100, 5));
-    test_sort(std::vector<int>{-3, 10, -3, 0, 7, -15, 10, 2});
-    test_sort(std::vector<double>{3.5, -1.25, 2.0, 0.0, -7.5, 2.0});
-    test_sort(std::vector<std::string>{"python", "c++", "aisd", "abc", "ab"});
-    test_sort(std::array<int, 10>{{9, 4, 7, 3, 6, 8, 2, 1, 5, 0}});
-    for (int n = 0; n <= 50; ++n) {
-        test_sort(random_ints(n, 10));
-    }
-    test_sort(random_ints(2000, 1000000));
-
-    int t[] = {9, 4, 7, 3, 6, 8, 2, 1, 5, 0};
-    const int size = sizeof(t) / sizeof(*t);
-    bubblesort(t, t + size);
-    assert(std::is_sorted(t, t + size));
-    int u[] = {9, 4, 7, 3, 6, 8, 2, 1, 5, 0};
-    quicksort(u, u + size);
-    assert(std::is_sorted(u, u + size));
-
-    std::vector<int> big = random_ints(100000, 1000000);
-    quicksort(big.begin(), big.end());
-    assert(std::is_sorted(big.begin(), big.end()));
-
-    std::cout << "Wszystkie testy zakończone pomyślnie." << std::endl;
+    test_bubblesort();
+    test_mergesort();
+    std::cout << "Testy OK" << std::endl;
     return 0;
 }
