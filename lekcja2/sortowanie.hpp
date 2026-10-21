@@ -1,6 +1,7 @@
 #ifndef SORTOWANIE_HPP
 #define SORTOWANIE_HPP
 
+#include <algorithm>
 #include <iterator>
 #include <utility>
 
@@ -26,31 +27,17 @@ void bubblesort(Iterator first, Iterator last) {
 }
 
 template<typename Iterator>
-void quicksort(Iterator first, Iterator last) {
-    typedef typename std::iterator_traits<Iterator>::difference_type Index;
-    typedef typename std::iterator_traits<Iterator>::value_type Value;
-    Index right = (last - first) - 1;
-    if (right < 1) {
+void mergesort(Iterator first, Iterator last) {
+    typename std::iterator_traits<Iterator>::difference_type n =
+        std::distance(first, last);
+    if (n < 2) {
         return;
     }
-    Value pivot = first[right / 2];
-    Index i = 0;
-    Index j = right;
-    while (i <= j) {
-        while (first[i] < pivot) {
-            ++i;
-        }
-        while (pivot < first[j]) {
-            --j;
-        }
-        if (i <= j) {
-            std::swap(first[i], first[j]);
-            ++i;
-            --j;
-        }
-    }
-    quicksort(first, first + (j + 1));
-    quicksort(first + i, last);
+    Iterator middle = first;
+    std::advance(middle, n / 2);
+    mergesort(first, middle);
+    mergesort(middle, last);
+    std::inplace_merge(first, middle, last);
 }
 
 #endif
